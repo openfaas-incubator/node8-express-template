@@ -6,7 +6,8 @@
 const express = require('express')
 const app = express()
 const handler = require('./function/handler');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const upload = multer({dest: 'uploads'});
 
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -20,6 +21,9 @@ class FunctionEvent {
         this.headers = req.headers;
         this.method = req.method;
         this.query = req.query;
+        if (req.files) {            
+            this.files = req.files;
+        } 
     }
 }
 

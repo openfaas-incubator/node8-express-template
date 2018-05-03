@@ -6,7 +6,9 @@
 const express = require('express')
 const app = express()
 const handler = require('./function/handler');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const multer  = require('multer');
+const upload = multer({dest: 'uploads'});
 
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -19,7 +21,10 @@ class FunctionEvent {
         this.body = req.body;
         this.headers = req.headers;
         this.method = req.method;
-        this.query = req.query;
+        this.query = req.query;        
+        if (req.files) {            
+            this.files = req.files;
+        } 
     }
 }
 
@@ -64,22 +69,22 @@ var middleware = (req, res) => {
         if (err) {
             console.error(err);
             return res.status(500).send(err);
-        }
-
+        }        
         if(isArray(functionResult) || isObject(functionResult)) {
             res.set(fnContext.headers()).status(fnContext.status()).send(JSON.stringify(functionResult));
         } else {
             res.set(fnContext.headers()).status(fnContext.status()).send(functionResult);
         }
     };
-
+    
     let fnEvent = new FunctionEvent(req);
     let fnContext = new FunctionContext(cb);
 
     handler(fnEvent, fnContext, cb);
 };
 
-app.post('/', middleware);
+app.post('/', upload.any(), middleware);
+
 app.get('/', middleware);
 
 const port = process.env.http_port || 3000;
