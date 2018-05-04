@@ -8,9 +8,16 @@ const app = express()
 const handler = require('./function/handler');
 const bodyParser = require('body-parser');
 const multer  = require('multer');
-const upload = multer({dest: 'uploads'});
 
-// app.use(bodyParser.urlencoded({ extended: false }));
+const storage = multer.diskStorage({    
+    filename: function (req, file, cb) {
+      cb(null, file.originalname)
+    }
+});
+  
+const upload = multer({ storage: storage });
+
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
 app.use(bodyParser.text({ type : "text/*" }));
