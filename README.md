@@ -9,6 +9,8 @@ This template is pre-release and is likely to change - please provide feedback v
 
 The template makes use of the OpenFaaS incubator project [of-watchdog](https://github.com/openfaas-incubator/of-watchdog).
 
+See also: [node10-express template](https://github.com/openfaas-incubator/node10-express-template/)
+
 ## Supported platforms
 
 * x86_64 - `node8-express`
