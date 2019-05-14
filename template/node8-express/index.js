@@ -82,6 +82,7 @@ var middleware = (req, res) => {
 
 app.post('/*', middleware);
 app.get('/*', middleware);
+app.options('/*', middleware);
 
 const port = process.env.http_port || 3000;
 
